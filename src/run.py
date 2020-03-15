@@ -14,13 +14,14 @@ routes = web.RouteTableDef()
 @routes.post('/api/v1/tasks')
 async def add_task(request):
     """Add task to queue"""
-
+    body = await request.post()
+    
     # TODO Input validator
     task = Task(
-        int(request.query.getone("n")),
-        float(request.query.getone("d")),
-        float(request.query.getone("n1")),
-        float(request.query.getone("interval"))
+        int(body.getone("n")),
+        float(body.getone("d")),
+        float(body.getone("n1")),
+        float(body.getone("interval"))
     )
 
     await asyncio.shield(emit_new_job(Job(task)))
